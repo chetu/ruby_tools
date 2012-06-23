@@ -12,8 +12,6 @@ def smtp_options
   }
 end
 
-
-
 def send_email(subject,email,body)
   Mail.defaults do
    delivery_method :smtp,
@@ -29,9 +27,6 @@ def send_email(subject,email,body)
  mail.deliver
 end
 
-
-
-
 def load_check
   load_check = `cat /proc/loadavg |cut -d " " -f 3 `
   load ="#{load_check}".split(" ")
@@ -40,6 +35,7 @@ def load_check
    send_email("xyz LOAD ALERT","chetan.muneshwar@example.com",load_status)
  end		
 end
+
 def disk_check
   array=`df -Ph | grep -r '/' | awk '{ printf "%s-%s-%s-%s ",$3,$4,$5,$6  }'`
   bulk_data="#{array}".split(" ")
@@ -81,6 +77,7 @@ def disk_icheck
    end
  end
 end
+
 def apache_check
   apache_pid = `ps -efa | grep httpd | grep -v grep | awk '{ print $2 }'| xargs |wc -w`
 #puts apache_pid.to_i
@@ -111,10 +108,6 @@ def pgsql_check
     send_email("xyz POSTGRES DOWN","chetan.muneshwar@example.com",psql_status)
   end
 end
-
-
-
-
 
 def ram_check
 	m_array = `free -tom |xargs |cut -d ":" -f 2 |cut -d " " -f 1-7 |xargs`
@@ -151,7 +144,7 @@ else
 end
 end
 def mail_server_check
-  res = `pii postfix |wc -w`
+  res = `ps -efa | grep postfix | grep -v grep | awk '{ print $2 }'| xargs  |wc -w`
   if res == 0
    mail_server_status = "Mail Server: Not Running "                 
    send_email("xyz MAIL_SERVER DOWN","chetan.muneshwar@example.com",mail_server_status)	
