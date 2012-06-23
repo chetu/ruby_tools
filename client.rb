@@ -1,12 +1,6 @@
 # cat /opt/client.rb 
 require 'rubygems'
 require 'mail'
-require "socket"
-require "openssl"
-require "base64"
-include OpenSSL
-require "base64"
-PORT = 5534
 
 def smtp_options
   { :address  => "mailer.example.com",
